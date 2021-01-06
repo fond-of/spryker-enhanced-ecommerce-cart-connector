@@ -10,10 +10,11 @@
   ],
   "require": {
     "php": ">=7.2",
-    "spryker-shop/shop-application-extension": "^1.0",
+    "fond-of-spryker/enhanced-ecommerce-extension": "dev-main",
+    "spryker-shop/shop-application-extension": "^1.1",
     "spryker/cart": "^7.1.0",
     "spryker/money": "^1.0 || ^2.0",
-    "fond-of-spryker/enhanced-ecommerce-extension": "dev-main"
+    "spryker/session": "^4.4.0"
   },
   "require-dev": {
     "spryker/code-sniffer": "^0.14.7",
