@@ -81,7 +81,7 @@ class DataLayerExpander implements DataLayerExpanderInterface
                     'add' => $this->getEventEcommerceAdd()->toArray(),
                 ]);
 
-            //$this->productSessionHandler->clearAddedProductsSession();
+            $this->productSessionHandler->clearAddedProductsSession();
 
             return $this->removeEmptyArrayIndex($enhancedEcommerceTransfer->toArray());
         }
