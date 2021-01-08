@@ -3,11 +3,10 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector;
 
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToSessionClientInterface;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Expander\DataLayerExpander;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Expander\DataLayerExpanderInterface;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandler;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandlerInterface;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\AddToCartRenderer;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\CartChangeQuantityRenderer;
+use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceDataLayerExpanderInterface;
+use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 
@@ -16,14 +15,6 @@ use Spryker\Yves\Kernel\AbstractFactory;
  */
 class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
 {
-    /**
-     * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToSessionClientInterface
-     */
-    public function getSessionClient(): EnhancedEcommerceCartConnectorToSessionClientInterface
-    {
-        return $this->getProvidedDependency(EnhancedEcommerceCartConnectorDependencyProvider::SESSION_CLIENT);
-    }
-
     /**
      * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface
      */
@@ -41,23 +32,22 @@ class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
     }
 
     /**
-     * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandlerInterface
+     * @return EnhancedEcommerceRendererInterface
      */
-    public function createProductSessionHandler(): ProductSessionHandlerInterface
+    public function createCartChangeQuantityRenderer(): EnhancedEcommerceRendererInterface
     {
-        return new ProductSessionHandler($this->getSessionClient());
-    }
-
-    /**
-     * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Expander\DataLayerExpanderInterface
-     */
-    public function createDataLayerExpander(): DataLayerExpanderInterface
-    {
-        return new DataLayerExpander(
-            $this->createProductSessionHandler(),
+        return new CartChangeQuantityRenderer(
             $this->getConfig(),
             $this->getCartClient(),
             $this->getMoneyPlugin()
         );
+    }
+
+    /**
+     * @return EnhancedEcommerceRendererInterface
+     */
+    public function createAddToCartRenderer(): EnhancedEcommerceRendererInterface
+    {
+        return new AddToCartRenderer($this->getMoneyPlugin(), $this->getConfig());
     }
 }

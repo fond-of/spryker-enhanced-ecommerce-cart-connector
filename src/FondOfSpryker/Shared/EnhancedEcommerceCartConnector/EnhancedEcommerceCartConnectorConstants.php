@@ -7,6 +7,7 @@ interface EnhancedEcommerceCartConnectorConstants
     public const PAGE_TYPE = 'cart';
 
     public const EEC_ADDED_PRODUCTS = 'EEC_ADDED_PRODUCTS';
+    public const EEC_REMOVED_PRODUCTS = 'EEC_REMOVED_PRODUCTS';
 
     public const REQUEST_SKU = 'sku';
     public const REQUEST_QUANTITY = 'quantity';
@@ -17,10 +18,15 @@ interface EnhancedEcommerceCartConnectorConstants
 
     public const CONFIG_DONT_UNSET_ARRAY_INDEX = 'CONFIG_DONT_UNSET_ARRAY_INDEX';
 
-    public const PARAMETER_PRODUCT_ATTR_BRAND = 'brand';
-    public const PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED = 'name_untranslated';
+    public const PARAM_PRODUCT = 'product';
+    public const PARAM_PRODUCT_ATTR_BRAND = 'brand';
+    public const PARAM_PRODUCT_ATTR_NAME_UNTRANSLATED = 'name_untranslated';
     public const PARAM_PRODUCT_ATTR_SIZE_UNTRANSLATED = 'size_untranslated';
+    public const PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED = 'model_untranslated';
     public const PARAM_PRODUCT_ATTR_SIZE = 'size';
+    public const PARAM_PRODUCT_ATTR_MODEL = 'model';
     public const PARAM_PRODUCT_ATTR_STYLE_UNTRANSLATED = 'style_untranslated';
     public const PARAM_PRODUCT_ATTR_STYLE = 'style';
+
+    public const ADD_TO_CART_PLUGIN_VALID_PAGE_TYPES = 'ADD_TO_CART_PLUGIN_VALID_PAGE_TYPES';
 }

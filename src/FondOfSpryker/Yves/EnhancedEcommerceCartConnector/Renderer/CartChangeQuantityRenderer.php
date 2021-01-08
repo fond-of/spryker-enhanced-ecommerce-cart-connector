@@ -1,25 +1,22 @@
 <?php
 
-namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Expander;
+namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
-use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandlerInterface;
+use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceDataLayerExpanderInterface;
+use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
 use Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceProductTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
+use Twig\Environment;
 
-class DataLayerExpander implements DataLayerExpanderInterface
+class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
 {
     public const UNTRANSLATED_KEY = '_';
-
-    /**
-     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandlerInterface
-     */
-    protected $productSessionHandler;
 
     /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
@@ -37,100 +34,88 @@ class DataLayerExpander implements DataLayerExpanderInterface
     protected $moneyPlugin;
 
     /**
-     * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Session\ProductSessionHandlerInterface $productSessionHandler
      * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig $ecommerceCartConnectorConfig
      * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface $cartClient
      * @param \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface $moneyPlugin
      */
     public function __construct(
-        ProductSessionHandlerInterface $productSessionHandler,
         EnhancedEcommerceCartConnectorConfig $ecommerceCartConnectorConfig,
         EnhancedEcommerceCartConnectorToCartClientInterface $cartClient,
         MoneyPluginInterface $moneyPlugin
     ) {
-        $this->productSessionHandler = $productSessionHandler;
         $this->ecommerceCartConnectorConfig = $ecommerceCartConnectorConfig;
         $this->cartClient = $cartClient;
         $this->moneyPlugin = $moneyPlugin;
     }
 
     /**
+     * @param \Twig\Environment $twig
      * @param string $page
      * @param array $twigVariableBag
-     * @param array $dataLayer
      *
-     * @return array
+     * @return string
      */
-    public function expand(string $page, array $twigVariableBag, array $dataLayer): array
+    public function expand(Environment $twig, string $page, array $twigVariableBag): string
     {
-        return $this->addEventAddProduct();
+        return $twig->render($this->getTemplate(), [
+            'cartItem' => $this->getCartItems(),
+            'enhancedEcommerce' => $this->createEnhancedEcommerce()->toArray(),
+            'data' => [],
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate(): string
+    {
+        return '@EnhancedEcommerceCartConnector/partials/cart-change-quantity.js.twig';
+    }
+
+    protected function createEnhancedEcommerce(): EnhancedEcommerceTransfer
+    {
+        $enhancedEcommerce = (new EnhancedEcommerceTransfer())
+            ->setEvent(ModuleConstants::EVENT)
+            ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
+            ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
+            ->setEcommerce(['add' => new EnhancedEcommerceAddEventTransfer()])
+        ;
+
+        return $enhancedEcommerce;
     }
 
     /**
      * @return array
      */
-    protected function addEventAddProduct(): array
+    protected function getCartItems(): array
     {
-        if (count($this->productSessionHandler->getAllAddedProducts()) > 0) {
-            $enhancedEcommerceTransfer = (new EnhancedEcommerceTransfer())
-                ->setEvent(ModuleConstants::EVENT)
-                ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
-                ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
-                ->setEventLabel(implode(',', $this->getSkuOfAddedProducts()))
-                ->setEcommerce([
-                    'add' => $this->getEventEcommerceAdd()->toArray(),
-                ]);
+        $cartItems = [];
 
-            $this->productSessionHandler->clearAddedProductsSession();
-
-            return $this->removeEmptyArrayIndex($enhancedEcommerceTransfer->toArray());
+        foreach ($this->cartClient->getQuote()->getItems() as $itemTransfer) {
+            $cartItems[$itemTransfer->getSku()] = $this->removeEmptyArrayIndex(
+                $this->createEnhancedEcommerceProductTransfer($itemTransfer)->toArray()
+            );
         }
 
-        return [];
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer
-     */
-    protected function getEventEcommerceAdd(): EnhancedEcommerceAddEventTransfer
-    {
-        $enhancedEcommerceAddEventTransfer = (new EnhancedEcommerceAddEventTransfer())
-            ->setActionField([]);
-
-        foreach ($this->productSessionHandler->getAllAddedProducts() as $product) {
-            if (!$product->getId()) {
-                continue;
-            }
-
-            $itemTransfer = $this->getProductFromQuote($product->getId());
-
-            if ($itemTransfer === null) {
-                continue;
-            }
-
-            $enhancedEcommerceAddEventTransfer->addProduct($this->completeProduct($itemTransfer, $product));
-        }
-
-        return $enhancedEcommerceAddEventTransfer;
+        return $cartItems;
     }
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer $enhancedEcommerceProductTransfer
      *
      * @return \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer
      */
-    protected function completeProduct(
-        ItemTransfer $itemTransfer,
-        EnhancedEcommerceProductTransfer $enhancedEcommerceProductTransfer
-    ): EnhancedEcommerceProductTransfer {
-        $enhancedEcommerceProductTransfer
+    protected function createEnhancedEcommerceProductTransfer(ItemTransfer $itemTransfer): EnhancedEcommerceProductTransfer
+    {
+        $enhancedEcommerceProductTransfer = (new EnhancedEcommerceProductTransfer())
             ->setId($itemTransfer->getSku())
             ->setBrand($this->getProductBrand($itemTransfer))
             ->setName($this->getProductName($itemTransfer))
             ->setVariant($this->getProductAttrStyle($itemTransfer))
             ->setDimension10($this->getSize($itemTransfer))
-            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()));
+            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()))
+            ->setQuantity($itemTransfer->getQuantity())
+        ;
 
         return $enhancedEcommerceProductTransfer;
     }
@@ -144,8 +129,8 @@ class DataLayerExpander implements DataLayerExpanderInterface
     {
         $productAttributes = $itemTransfer->getAbstractAttributes();
 
-        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED])) {
-            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_NAME_UNTRANSLATED];
+        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_NAME_UNTRANSLATED])) {
+            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_NAME_UNTRANSLATED];
         }
 
         return $itemTransfer->getName();
@@ -160,8 +145,8 @@ class DataLayerExpander implements DataLayerExpanderInterface
     {
         $productAttributes = $itemTransfer->getAbstractAttributes();
 
-        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_BRAND])) {
-            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAMETER_PRODUCT_ATTR_BRAND];
+        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_BRAND])) {
+            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_BRAND];
         }
 
         return '';
@@ -216,21 +201,6 @@ class DataLayerExpander implements DataLayerExpanderInterface
     }
 
     /**
-     * @return array
-     */
-    protected function getSkuOfAddedProducts(): array
-    {
-        $skus = [];
-
-        /** @var \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer $enhancedEcommerceProductTransfer */
-        foreach ($this->productSessionHandler->getAllAddedProducts() as $enhancedEcommerceProductTransfer) {
-            $skus[] = $enhancedEcommerceProductTransfer->getId();
-        }
-
-        return $skus;
-    }
-
-    /**
      * @param array $haystack
      *
      * @return array
@@ -248,21 +218,5 @@ class DataLayerExpander implements DataLayerExpanderInterface
         }
 
         return $haystack;
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer|null
-     */
-    protected function getProductFromQuote(string $sku): ?ItemTransfer
-    {
-        foreach ($this->cartClient->getQuote()->getItems() as $itemTransfer) {
-            if ($itemTransfer->getSku() === $sku) {
-                return $itemTransfer;
-            }
-        }
-
-        return null;
     }
 }

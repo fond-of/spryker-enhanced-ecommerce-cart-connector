@@ -18,4 +18,14 @@ class EnhancedEcommerceCartConnectorConfig extends AbstractBundleConfig
             'action_field',
         ]);
     }
+
+    /**
+     * @return array
+     */
+    public function getValidPageTypes(): array
+    {
+        return $this->get(EnhancedEcommerceCartConnectorConstants::ADD_TO_CART_PLUGIN_VALID_PAGE_TYPES, [
+            'productDetail',
+        ]);
+    }
 }

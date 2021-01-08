@@ -1,15 +1,17 @@
 <?php
 
-namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Plugin\DataLayer;
+namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Plugin\Renderer;
 
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceDataLayerExpanderPluginInterface;
+use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRenderePluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
+use Twig\Environment;
 
 /**
  * @method \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorFactory getFactory()
  */
-class CartDataLayerExpanderPlugin extends AbstractPlugin implements EnhancedEcommerceDataLayerExpanderPluginInterface
+class CartChangeQuantityRendererPlugin extends AbstractPlugin implements EnhancedEcommerceRenderePluginInterface
 {
     /**
      * @param string $pageType
@@ -23,16 +25,16 @@ class CartDataLayerExpanderPlugin extends AbstractPlugin implements EnhancedEcom
     }
 
     /**
+     * @param \Twig\Environment $twig
      * @param string $page
      * @param array $twigVariableBag
-     * @param array $dataLayer
      *
-     * @return array
+     * @return string
      */
-    public function expand(string $page, array $twigVariableBag, array $dataLayer): array
+    public function render(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $this->getFactory()
-            ->createDataLayerExpander()
-            ->expand($page, $twigVariableBag, $dataLayer);
+            ->createCartChangeQuantityRenderer()
+            ->expand($twig, $page, $twigVariableBag);
     }
 }
