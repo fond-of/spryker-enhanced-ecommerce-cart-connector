@@ -10,7 +10,6 @@ use Spryker\Yves\Money\Plugin\MoneyPlugin;
 
 class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
-    public const PRODUCT_RESOURCE_ALIAS_STORAGE_CIENT = 'PRODUCT_RESOURCE_ALIAS_STORAGE_CIENT';
     public const STORE = 'STORE';
     public const CART_CLIENT = 'CART_CLIENT';
     public const PLUGIN_MONEY = 'PLUGIN_MONEY';

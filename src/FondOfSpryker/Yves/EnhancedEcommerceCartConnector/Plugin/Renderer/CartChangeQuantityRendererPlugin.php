@@ -3,7 +3,6 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Plugin\Renderer;
 
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
-use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceDataLayerExpanderPluginInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRenderePluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
 use Twig\Environment;

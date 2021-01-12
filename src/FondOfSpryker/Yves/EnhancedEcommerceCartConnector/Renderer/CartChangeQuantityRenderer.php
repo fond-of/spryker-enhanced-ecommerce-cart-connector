@@ -5,7 +5,6 @@ namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
-use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceDataLayerExpanderInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
 use Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceProductTransfer;
@@ -78,8 +77,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
             ->setEvent(ModuleConstants::EVENT)
             ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
             ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
-            ->setEcommerce(['add' => new EnhancedEcommerceAddEventTransfer()])
-        ;
+            ->setEcommerce(['add' => new EnhancedEcommerceAddEventTransfer()]);
 
         return $enhancedEcommerce;
     }
@@ -114,8 +112,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
             ->setVariant($this->getProductAttrStyle($itemTransfer))
             ->setDimension10($this->getSize($itemTransfer))
             ->setPrice($this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()))
-            ->setQuantity($itemTransfer->getQuantity())
-        ;
+            ->setQuantity($itemTransfer->getQuantity());
 
         return $enhancedEcommerceProductTransfer;
     }

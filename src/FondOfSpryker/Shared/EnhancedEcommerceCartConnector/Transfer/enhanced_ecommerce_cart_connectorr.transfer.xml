@@ -26,4 +26,11 @@
         <property name="price" type="float"/>
         <property name="coupon" type="int"/>
     </transfer>
+
+    <transfer name="ProductView">
+        <property name="name" type="string"/>
+        <property name="sku" type="string"/>
+        <property name="price" type="int"/>
+        <property name="attributes" type="array"/>
+    </transfer>
 </transfers>

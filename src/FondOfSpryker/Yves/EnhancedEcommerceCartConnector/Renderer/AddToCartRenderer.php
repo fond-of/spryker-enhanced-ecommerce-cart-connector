@@ -1,9 +1,8 @@
 <?php
 
-
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
-
+use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
 use Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer;
@@ -12,17 +11,16 @@ use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Twig\Environment;
-use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
 
 class AddToCartRenderer implements EnhancedEcommerceRendererInterface
 {
     /**
-     * @var MoneyPluginInterface
+     * @var \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
      */
     protected $moneyPlugin;
 
     /**
-     * @var EnhancedEcommerceCartConnectorConfig
+     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
      */
     protected $config;
 
@@ -33,7 +31,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param Environment $twig
+     * @param \Twig\Environment $twig
      * @param string $page
      * @param array $twigVariableBag
      *
@@ -56,7 +54,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
 
     protected function createEnhancedEcommerce(array $twigVariableBag): EnhancedEcommerceTransfer
     {
-        /** @var ProductViewTransfer $productViewTransfer */
+        /** @var \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer */
         $productViewTransfer = $twigVariableBag[ModuleConstants::PARAM_PRODUCT];
 
         $enhancedEcommerce = (new EnhancedEcommerceTransfer())
@@ -64,23 +62,22 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
             ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
             ->setEventLabel($productViewTransfer->getSku())
-            ->setEcommerce(['add' => (new EnhancedEcommerceAddEventTransfer())
-                ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer))
-            ])
-        ;
+            ->setEcommerce([
+                'add' => (new EnhancedEcommerceAddEventTransfer())
+                    ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer)),
+            ]);
 
         return $enhancedEcommerce;
     }
 
     /**
-     * @param ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
-     * @return EnhancedEcommerceProductTransfer
+     * @return \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer
      */
     protected function createEnhancedEcommerceProduct(
         ProductViewTransfer $productViewTransfer
-    ): EnhancedEcommerceProductTransfer
-    {
+    ): EnhancedEcommerceProductTransfer {
         return (new EnhancedEcommerceProductTransfer())
             ->setId($productViewTransfer->getSku())
             ->setName($this->getProductName($productViewTransfer))
@@ -88,8 +85,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setBrand($this->getProductBrand($productViewTransfer))
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
-            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()))
-        ;
+            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()));
     }
 
     /**
@@ -117,7 +113,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
      * @return string
      */
@@ -141,7 +137,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
      * @return string
      */
@@ -161,7 +157,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
      * @return string
      */
