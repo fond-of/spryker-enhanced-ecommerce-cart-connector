@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.querySelector("#product_addtocart_form").addEventListener("submit", (event) => {
         event.preventDefault();
 
+        console.log({{ data | json_encode() | raw }});
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({{ data | json_encode() | raw }});
 

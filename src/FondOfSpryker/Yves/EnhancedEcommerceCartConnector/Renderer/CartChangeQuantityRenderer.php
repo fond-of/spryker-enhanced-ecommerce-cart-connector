@@ -111,7 +111,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
             ->setName($this->getProductName($itemTransfer))
             ->setVariant($this->getProductAttrStyle($itemTransfer))
             ->setDimension10($this->getSize($itemTransfer))
-            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()))
+            ->setPrice(''.$this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()).'')
             ->setQuantity($itemTransfer->getQuantity());
 
         return $enhancedEcommerceProductTransfer;

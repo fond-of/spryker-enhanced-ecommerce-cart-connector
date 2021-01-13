@@ -19,6 +19,8 @@ window.changeCartQuantity = function (sku, quantity) {
     enhancedEcommerce['event_action'] = eventAction;
     enhancedEcommerce['ecommerce']['add']['products'] = [product];
 
+    console.log(enhancedEcommerce);
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push([enhancedEcommerce]);
 }

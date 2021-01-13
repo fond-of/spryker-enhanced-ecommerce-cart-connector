@@ -13,7 +13,7 @@
 
     <transfer name="EnhancedEcommerceAddEvent">
         <property name="actionField" type="array"/>
-        <property name="products" singular="product" type="EnhancedEcommerceProduct[]"/>
+        <property name="products" singular="product" type="array"/>
     </transfer>
 
     <transfer name="EnhancedEcommerceProduct">
@@ -23,7 +23,7 @@
         <property name="brand" type="string"/>
         <property name="dimension10" type="string"/>
         <property name="quantity" type="int"/>
-        <property name="price" type="float"/>
+        <property name="price" type="string"/>
         <property name="coupon" type="int"/>
     </transfer>
 
