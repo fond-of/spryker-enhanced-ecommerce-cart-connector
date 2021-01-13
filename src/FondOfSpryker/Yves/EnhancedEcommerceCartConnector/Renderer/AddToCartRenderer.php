@@ -40,7 +40,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     public function expand(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $twig->render($this->getTemplate(), [
-            'data' => $this->createEnhancedEcommerce($twigVariableBag)->toArray(),
+            'data' => $this->removeEmptyArrayIndex($this->createEnhancedEcommerce($twigVariableBag)->toArray()),
         ]);
     }
 
@@ -64,7 +64,8 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setEventLabel($productViewTransfer->getSku())
             ->setEcommerce([
                 'add' => (new EnhancedEcommerceAddEventTransfer())
-                    ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer)),
+                    ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer))
+                    ->toArray(),
             ]);
 
         return $enhancedEcommerce;
@@ -73,11 +74,11 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     /**
      * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
-     * @return \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer
+     * @return array
      */
     protected function createEnhancedEcommerceProduct(
         ProductViewTransfer $productViewTransfer
-    ): EnhancedEcommerceProductTransfer {
+    ): array {
         return (new EnhancedEcommerceProductTransfer())
             ->setId($productViewTransfer->getSku())
             ->setName($this->getProductName($productViewTransfer))
@@ -85,7 +86,8 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setBrand($this->getProductBrand($productViewTransfer))
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
-            ->setPrice($this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()));
+            ->setPrice(''.$this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()).'')
+            ->toArray();
     }
 
     /**
@@ -178,5 +180,25 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
         }
 
         return '';
+    }
+
+    /**
+     * @param array $haystack
+     *
+     * @return array
+     */
+    protected function removeEmptyArrayIndex(array $haystack): array
+    {
+        foreach ($haystack as $key => $value) {
+            if (is_array($value)) {
+                $haystack[$key] = $this->removeEmptyArrayIndex($haystack[$key]);
+            }
+
+            if (!$value) {
+                unset($haystack[$key]);
+            }
+        }
+
+        return $haystack;
     }
 }
