@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
@@ -10,7 +11,6 @@ use Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceProductTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Twig\Environment;
 
 class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
@@ -28,23 +28,23 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     protected $cartClient;
 
     /**
-     * @var \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
+     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
      */
-    protected $moneyPlugin;
+    protected $integerToDecimalConverter;
 
     /**
      * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig $ecommerceCartConnectorConfig
      * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface $cartClient
-     * @param \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface $moneyPlugin
+     * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface $integerToDecimalConverter
      */
     public function __construct(
         EnhancedEcommerceCartConnectorConfig $ecommerceCartConnectorConfig,
         EnhancedEcommerceCartConnectorToCartClientInterface $cartClient,
-        MoneyPluginInterface $moneyPlugin
+        IntegerToDecimalConverterInterface $integerToDecimalConverter
     ) {
         $this->ecommerceCartConnectorConfig = $ecommerceCartConnectorConfig;
         $this->cartClient = $cartClient;
-        $this->moneyPlugin = $moneyPlugin;
+        $this->integerToDecimalConverter = $integerToDecimalConverter;
     }
 
     /**
@@ -111,7 +111,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
             ->setName($this->getProductName($itemTransfer))
             ->setVariant($this->getProductAttrStyle($itemTransfer))
             ->setDimension10($this->getSize($itemTransfer))
-            ->setPrice('' . $this->moneyPlugin->convertIntegerToDecimal($itemTransfer->getUnitPrice()) . '')
+            ->setPrice('' . $this->integerToDecimalConverter->convert($itemTransfer->getUnitPrice()) . '')
             ->setQuantity($itemTransfer->getQuantity());
 
         return $enhancedEcommerceProductTransfer;

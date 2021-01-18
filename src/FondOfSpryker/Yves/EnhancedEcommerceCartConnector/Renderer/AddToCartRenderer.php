@@ -3,31 +3,37 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants as ModuleConstants;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
 use Generated\Shared\Transfer\EnhancedEcommerceAddEventTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceProductTransfer;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
-use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Twig\Environment;
 
 class AddToCartRenderer implements EnhancedEcommerceRendererInterface
 {
     /**
-     * @var \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
-     */
-    protected $moneyPlugin;
-
-    /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
      */
     protected $config;
 
-    public function __construct(MoneyPluginInterface $moneyPlugin, EnhancedEcommerceCartConnectorConfig $config)
-    {
-        $this->moneyPlugin = $moneyPlugin;
+    /**
+     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
+     */
+    protected $integerToDecimalConverter;
+
+    /**
+     * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface $integerToDecimalConverter
+     * @param \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig $config
+     */
+    public function __construct(
+        IntegerToDecimalConverterInterface $integerToDecimalConverter,
+        EnhancedEcommerceCartConnectorConfig $config
+    ) {
         $this->config = $config;
+        $this->integerToDecimalConverter = $integerToDecimalConverter;
     }
 
     /**
@@ -91,7 +97,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setBrand($this->getProductBrand($productViewTransfer))
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
-            ->setPrice('' . $this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()) . '')
+            ->setPrice('' . $this->integerToDecimalConverter->convert($productViewTransfer->getPrice()) . '')
             ->toArray();
     }
 

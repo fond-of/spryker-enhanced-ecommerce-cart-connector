@@ -3,17 +3,17 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
-use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Twig\Environment;
 
 class AddToCartRendererTest extends Unit
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
      */
-    protected $moneyPluginMock;
+    protected $integerToDecimalConverterMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
@@ -45,7 +45,7 @@ class AddToCartRendererTest extends Unit
      */
     protected function _before(): void
     {
-        $this->moneyPluginMock = $this->getMockBuilder(MoneyPluginInterface::class)
+        $this->integerToDecimalConverterMock = $this->getMockBuilder(IntegerToDecimalConverter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -62,7 +62,7 @@ class AddToCartRendererTest extends Unit
             ->getMock();
 
         $this->renderer = new AddToCartRenderer(
-            $this->moneyPluginMock,
+            $this->integerToDecimalConverterMock,
             $this->configMock
         );
     }

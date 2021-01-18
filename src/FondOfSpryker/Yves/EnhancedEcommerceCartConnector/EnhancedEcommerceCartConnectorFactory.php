@@ -2,11 +2,11 @@
 
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector;
 
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\AddToCartRenderer;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\CartChangeQuantityRenderer;
 use FondOfSpryker\Yves\EnhancedEcommerceExtension\Dependency\EnhancedEcommerceRendererInterface;
-use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 
 /**
@@ -23,11 +23,11 @@ class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
+     * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
      */
-    public function getMoneyPlugin(): MoneyPluginInterface
+    public function getIntegerToDecimalConverter(): IntegerToDecimalConverterInterface
     {
-        return $this->getProvidedDependency(EnhancedEcommerceCartConnectorDependencyProvider::PLUGIN_MONEY);
+        return $this->getProvidedDependency(EnhancedEcommerceCartConnectorDependencyProvider::CONVERTER_INTERGER_TO_DECIMAL);
     }
 
     /**
@@ -38,7 +38,7 @@ class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
         return new CartChangeQuantityRenderer(
             $this->getConfig(),
             $this->getCartClient(),
-            $this->getMoneyPlugin()
+            $this->getIntegerToDecimalConverter()
         );
     }
 
@@ -47,6 +47,6 @@ class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
      */
     public function createAddToCartRenderer(): EnhancedEcommerceRendererInterface
     {
-        return new AddToCartRenderer($this->getMoneyPlugin(), $this->getConfig());
+        return new AddToCartRenderer($this->getIntegerToDecimalConverter(), $this->getConfig());
     }
 }

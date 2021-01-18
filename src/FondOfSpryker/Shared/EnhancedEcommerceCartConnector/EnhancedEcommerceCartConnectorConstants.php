@@ -6,12 +6,6 @@ interface EnhancedEcommerceCartConnectorConstants
 {
     public const PAGE_TYPE = 'cart';
 
-    public const EEC_ADDED_PRODUCTS = 'EEC_ADDED_PRODUCTS';
-    public const EEC_REMOVED_PRODUCTS = 'EEC_REMOVED_PRODUCTS';
-
-    public const REQUEST_SKU = 'sku';
-    public const REQUEST_QUANTITY = 'quantity';
-
     public const EVENT = 'genericEvent';
     public const EVENT_CATEGORY = 'ecommerce';
     public const EVENT_ACTION_ADD_TO_CART = 'addToCart';

@@ -3,18 +3,18 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
 use Twig\Environment;
 
 class CartChangeQuantityRendererTest extends Unit
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
      */
-    protected $moneyPluginMock;
+    protected $integerToDecimalConverterMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
@@ -50,7 +50,7 @@ class CartChangeQuantityRendererTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->moneyPluginMock = $this->getMockBuilder(MoneyPluginInterface::class)
+        $this->integerToDecimalConverterMock = $this->getMockBuilder(IntegerToDecimalConverter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -69,7 +69,7 @@ class CartChangeQuantityRendererTest extends Unit
         $this->renderer = new CartChangeQuantityRenderer(
             $this->configMock,
             $this->cartClientMock,
-            $this->moneyPluginMock
+            $this->integerToDecimalConverterMock
         );
     }
 

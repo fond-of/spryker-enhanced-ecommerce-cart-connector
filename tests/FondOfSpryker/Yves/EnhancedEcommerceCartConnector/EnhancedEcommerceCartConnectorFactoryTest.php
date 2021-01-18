@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientInterface;
 use Spryker\Yves\Kernel\Container;
 
@@ -24,11 +25,20 @@ class EnhancedEcommerceCartConnectorFactoryTest extends Unit
     protected $cartClientMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
+     */
+    protected $integerToDecimalConverterMock;
+
+    /**
      * @return void
      */
     protected function _before(): void
     {
         $this->containerMock = $this->getMockBuilder(Container::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->integerToDecimalConverterMock = $this->getMockBuilder(IntegerToDecimalConverter::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -56,5 +66,23 @@ class EnhancedEcommerceCartConnectorFactoryTest extends Unit
             ->willReturn($this->cartClientMock);
 
         $this->factory->getCartClient();
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetIntegerToDecimalConverter(): void
+    {
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('has')
+            ->with(EnhancedEcommerceCartConnectorDependencyProvider::CONVERTER_INTERGER_TO_DECIMAL)
+            ->willReturn(true);
+
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('get')
+            ->with(EnhancedEcommerceCartConnectorDependencyProvider::CONVERTER_INTERGER_TO_DECIMAL)
+            ->willReturn($this->integerToDecimalConverterMock);
+
+        $this->factory->getIntegerToDecimalConverter();
     }
 }

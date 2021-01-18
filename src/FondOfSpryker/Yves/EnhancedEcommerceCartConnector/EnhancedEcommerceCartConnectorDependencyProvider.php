@@ -2,17 +2,18 @@
 
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector;
 
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
+use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientBridge;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
-use Spryker\Yves\Money\Plugin\MoneyPlugin;
 
 class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const STORE = 'STORE';
     public const CART_CLIENT = 'CART_CLIENT';
-    public const PLUGIN_MONEY = 'PLUGIN_MONEY';
+    public const CONVERTER_INTERGER_TO_DECIMAL = 'CONVERTER_INTERGER_TO_DECIMAL';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -23,7 +24,7 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
     {
         $this->addStore($container);
         $this->addCartClient($container);
-        $this->addMoneyPlugin($container);
+        $this->addIntegerToDecimalConverter($container);
 
         return $container;
     }
@@ -35,7 +36,7 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
      */
     protected function addStore(Container $container): Container
     {
-        $container->set(static::STORE, function (Container $container) {
+        $container->set(static::STORE, static function (Container $container) {
             return Store::getInstance();
         });
 
@@ -49,7 +50,7 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
      */
     protected function addCartClient(Container $container): Container
     {
-        $container->set(static::CART_CLIENT, function (Container $container) {
+        $container->set(static::CART_CLIENT, static function (Container $container) {
             return new EnhancedEcommerceCartConnectorToCartClientBridge(
                 $container->getLocator()->cart()->client()
             );
@@ -63,12 +64,22 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
      *
      * @return \Spryker\Yves\Kernel\Container
      */
-    protected function addMoneyPlugin(Container $container): Container
+    protected function addIntegerToDecimalConverter(Container $container): Container
     {
-        $container->set(static::PLUGIN_MONEY, static function () {
-            return new MoneyPlugin();
+        $self = $this;
+
+        $container->set(static::CONVERTER_INTERGER_TO_DECIMAL, static function () use ($self) {
+            return $self->getIntegerToDecimalConverter();
         });
 
         return $container;
+    }
+
+    /**
+     * @return \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverterInterface
+     */
+    protected function getIntegerToDecimalConverter(): IntegerToDecimalConverterInterface
+    {
+        return new IntegerToDecimalConverter();
     }
 }
