@@ -31,6 +31,11 @@ class AddToCartRendererTest extends Unit
     protected $enhancedEcommerceTransferMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCheckoutConnector\Model\ProductModelInterface
+     */
+    protected $productModelMock;
+
+    /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\AddToCartRenderer
      */
     protected $renderer;
@@ -56,7 +61,10 @@ class AddToCartRendererTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->renderer = new AddToCartRenderer($this->moneyPluginMock, $this->configMock);
+        $this->renderer = new AddToCartRenderer(
+            $this->moneyPluginMock,
+            $this->configMock
+        );
     }
 
     /**

@@ -52,6 +52,11 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
         return '@EnhancedEcommerceCartConnector/partials/product-add-to-cart.js.twig';
     }
 
+    /**
+     * @param array $twigVariableBag
+     *
+     * @return \Generated\Shared\Transfer\EnhancedEcommerceTransfer
+     */
     protected function createEnhancedEcommerce(array $twigVariableBag): EnhancedEcommerceTransfer
     {
         /** @var \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer */
@@ -86,7 +91,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setBrand($this->getProductBrand($productViewTransfer))
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
-            ->setPrice(''.$this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()).'')
+            ->setPrice('' . $this->moneyPlugin->convertIntegerToDecimal($productViewTransfer->getPrice()) . '')
             ->toArray();
     }
 
