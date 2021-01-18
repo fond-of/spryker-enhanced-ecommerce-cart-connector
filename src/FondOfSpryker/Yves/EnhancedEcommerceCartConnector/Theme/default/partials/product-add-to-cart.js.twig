@@ -1,0 +1,10 @@
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.querySelector("#product_addtocart_form").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({{ data | json_encode() | raw }});
+
+        document.getElementById("product_addtocart_form").submit();
+    });
+});

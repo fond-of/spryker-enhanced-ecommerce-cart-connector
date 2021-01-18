@@ -1,0 +1,24 @@
+window.changeCartQuantity = function (sku, quantity) {
+    var cartItems = {{ cartItem|json_encode()|raw }};
+    var enhancedEcommerce = {{ enhancedEcommerce|json_encode()|raw }};
+    var product = cartItems[sku];
+    var eventAction = '';
+
+    if (quantity > product['quantity']) {
+        eventAction = 'addToCart';
+
+        product.quantity = quantity - product['quantity'];
+    }
+
+    if (product['quantity'] > quantity) {
+        eventAction = 'removeFromCart';
+
+        product.quantity = product['quantity'] - quantity;
+    }
+
+    enhancedEcommerce['event_action'] = eventAction;
+    enhancedEcommerce['ecommerce']['add']['products'] = [product];
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push([enhancedEcommerce]);
+}
