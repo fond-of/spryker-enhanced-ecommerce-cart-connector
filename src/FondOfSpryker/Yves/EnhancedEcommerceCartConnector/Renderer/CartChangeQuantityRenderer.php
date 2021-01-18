@@ -209,7 +209,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
                 $haystack[$key] = $this->removeEmptyArrayIndex($haystack[$key]);
             }
 
-            if (!$value && !in_array($key, $this->ecommerceCartConnectorConfig->getDontUnsetArrayIndex())) {
+            if (!$value && !in_array($key, $this->ecommerceCartConnectorConfig->getArrayIndexWhitelist())) {
                 unset($haystack[$key]);
             }
         }

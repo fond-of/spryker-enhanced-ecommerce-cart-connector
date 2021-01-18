@@ -12,7 +12,7 @@ class EnhancedEcommerceCartConnectorConfig extends AbstractBundleConfig
      *
      * @return array
      */
-    public function getDontUnsetArrayIndex(): array
+    public function getArrayIndexWhitelist(): array
     {
         return $this->get(EnhancedEcommerceCartConnectorConstants::CONFIG_DONT_UNSET_ARRAY_INDEX, [
             'action_field',

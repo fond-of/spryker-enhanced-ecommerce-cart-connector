@@ -11,7 +11,6 @@ use Spryker\Yves\Kernel\Container;
 
 class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
-    public const STORE = 'STORE';
     public const CART_CLIENT = 'CART_CLIENT';
     public const CONVERTER_INTERGER_TO_DECIMAL = 'CONVERTER_INTERGER_TO_DECIMAL';
 
@@ -22,23 +21,8 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
      */
     public function provideDependencies(Container $container): Container
     {
-        $this->addStore($container);
         $this->addCartClient($container);
         $this->addIntegerToDecimalConverter($container);
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Yves\Kernel\Container $container
-     *
-     * @return \Spryker\Yves\Kernel\Container
-     */
-    protected function addStore(Container $container): Container
-    {
-        $container->set(static::STORE, static function (Container $container) {
-            return Store::getInstance();
-        });
 
         return $container;
     }
