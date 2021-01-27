@@ -16,9 +16,9 @@ window.changeCartQuantity = function (sku, quantity) {
         product.quantity = product['quantity'] - quantity;
     }
 
-    enhancedEcommerce['event_action'] = eventAction;
+    enhancedEcommerce['eventAction'] = eventAction;
     enhancedEcommerce['ecommerce']['add']['products'] = [product];
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push([enhancedEcommerce]);
+    window.dataLayer.push(enhancedEcommerce);
 }

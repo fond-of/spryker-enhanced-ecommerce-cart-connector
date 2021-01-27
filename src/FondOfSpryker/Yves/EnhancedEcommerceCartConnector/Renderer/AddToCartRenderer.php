@@ -46,7 +46,9 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     public function expand(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $twig->render($this->getTemplate(), [
-            'data' => $this->removeEmptyArrayIndex($this->createEnhancedEcommerce($twigVariableBag)->toArray()),
+            'data' => $this->removeEmptyArrayIndex(
+                $this->createEnhancedEcommerce($twigVariableBag)->toArray(true, true)
+            ),
         ]);
     }
 
@@ -76,7 +78,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setEcommerce([
                 'add' => (new EnhancedEcommerceAddEventTransfer())
                     ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer))
-                    ->toArray(),
+                    ->toArray(true, true),
             ]);
 
         return $enhancedEcommerce;
@@ -98,7 +100,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
             ->setPrice('' . $this->integerToDecimalConverter->convert($productViewTransfer->getPrice()) . '')
-            ->toArray();
+            ->toArray(true, true);
     }
 
     /**

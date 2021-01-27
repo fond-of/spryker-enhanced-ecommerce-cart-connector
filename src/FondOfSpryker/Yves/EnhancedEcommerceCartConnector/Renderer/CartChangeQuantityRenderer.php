@@ -58,7 +58,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     {
         return $twig->render($this->getTemplate(), [
             'cartItem' => $this->getCartItems(),
-            'enhancedEcommerce' => $this->createEnhancedEcommerce()->toArray(),
+            'enhancedEcommerce' => $this->createEnhancedEcommerce()->toArray(true, true),
             'data' => [],
         ]);
     }
@@ -91,7 +91,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
 
         foreach ($this->cartClient->getQuote()->getItems() as $itemTransfer) {
             $cartItems[$itemTransfer->getSku()] = $this->removeEmptyArrayIndex(
-                $this->createEnhancedEcommerceProductTransfer($itemTransfer)->toArray()
+                $this->createEnhancedEcommerceProductTransfer($itemTransfer)->toArray(true, true)
             );
         }
 
