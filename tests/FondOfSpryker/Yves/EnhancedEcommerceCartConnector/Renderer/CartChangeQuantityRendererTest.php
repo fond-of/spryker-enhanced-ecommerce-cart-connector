@@ -92,6 +92,6 @@ class CartChangeQuantityRendererTest extends Unit
             ->method('getItems')
             ->willReturn([]);
 
-        $this->renderer->expand($this->twigMock, 'page', $twigVariableBag);
+        $result = $this->renderer->expand($this->twigMock, 'page', $twigVariableBag);
     }
 }

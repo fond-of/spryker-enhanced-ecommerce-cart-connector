@@ -1,24 +1,22 @@
 window.changeCartQuantity = function (sku, quantity) {
     var cartItems = {{ cartItem|json_encode()|raw }};
-    var enhancedEcommerce = {{ enhancedEcommerce|json_encode()|raw }};
+    var addToCartLayer = {{ addToCartLayer|json_encode()|raw }};
+    var removeFromCartLayer = {{ removeFromCartLayer|json_encode()|raw }};
     var product = cartItems[sku];
-    var eventAction = '';
+    var eventLayer;
 
     if (quantity > product['quantity']) {
-        eventAction = 'addToCart';
-
         product.quantity = quantity - product['quantity'];
+        addToCartLayer['ecommerce']['add']['products'] = [product];
+        eventLayer = addToCartLayer;
     }
 
     if (product['quantity'] > quantity) {
-        eventAction = 'removeFromCart';
-
         product.quantity = product['quantity'] - quantity;
+        removeFromCartLayer['ecommerce']['remove']['products'] = [product];
+        eventLayer = removeFromCartLayer;
     }
 
-    enhancedEcommerce['eventAction'] = eventAction;
-    enhancedEcommerce['ecommerce']['add']['products'] = [product];
-
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(enhancedEcommerce);
+    window.dataLayer.push(eventLayer);
 }

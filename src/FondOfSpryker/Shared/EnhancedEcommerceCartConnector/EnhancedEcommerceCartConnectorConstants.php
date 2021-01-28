@@ -9,6 +9,7 @@ interface EnhancedEcommerceCartConnectorConstants
     public const EVENT = 'genericEvent';
     public const EVENT_CATEGORY = 'ecommerce';
     public const EVENT_ACTION_ADD_TO_CART = 'addToCart';
+    public const EVENT_ACTION_REMOVE_FROM_CART = 'removeFromCart';
 
     public const CONFIG_DONT_UNSET_ARRAY_INDEX = 'CONFIG_DONT_UNSET_ARRAY_INDEX';
 

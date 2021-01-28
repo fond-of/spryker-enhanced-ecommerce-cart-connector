@@ -17,6 +17,9 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
 {
     public const UNTRANSLATED_KEY = '_';
 
+    public const EVENT_ADD = 'add';
+    public const EVENT_REMOVE = 'remove';
+
     /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
      */
@@ -58,8 +61,8 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     {
         return $twig->render($this->getTemplate(), [
             'cartItem' => $this->getCartItems(),
-            'enhancedEcommerce' => $this->createEnhancedEcommerce()->toArray(true, true),
-            'data' => [],
+            'addToCartLayer' => $this->createEnhancedEcommerceAddToCart()->toArray(true, true),
+            'removeFromCartLayer' => $this->createEnhancedEcommerceRemoveFromCart()->toArray(true, true),
         ]);
     }
 
@@ -71,13 +74,30 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
         return '@EnhancedEcommerceCartConnector/partials/cart-change-quantity.js.twig';
     }
 
-    protected function createEnhancedEcommerce(): EnhancedEcommerceTransfer
+    /**
+     * @return EnhancedEcommerceTransfer
+     */
+    protected function createEnhancedEcommerceAddToCart(): EnhancedEcommerceTransfer
     {
         $enhancedEcommerce = (new EnhancedEcommerceTransfer())
             ->setEvent(ModuleConstants::EVENT)
             ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
             ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
-            ->setEcommerce(['add' => new EnhancedEcommerceAddEventTransfer()]);
+            ->setEcommerce([static::EVENT_ADD => new EnhancedEcommerceAddEventTransfer()]);
+
+        return $enhancedEcommerce;
+    }
+
+    /**
+     * @return EnhancedEcommerceTransfer
+     */
+    protected function createEnhancedEcommerceRemoveFromCart(): EnhancedEcommerceTransfer
+    {
+        $enhancedEcommerce = (new EnhancedEcommerceTransfer())
+            ->setEvent(ModuleConstants::EVENT)
+            ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
+            ->setEventAction(ModuleConstants::EVENT_ACTION_REMOVE_FROM_CART)
+            ->setEcommerce([static::EVENT_REMOVE => new EnhancedEcommerceAddEventTransfer()]);
 
         return $enhancedEcommerce;
     }
