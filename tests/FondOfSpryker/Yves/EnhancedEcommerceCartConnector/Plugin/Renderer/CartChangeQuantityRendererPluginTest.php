@@ -27,6 +27,11 @@ class CartChangeQuantityRendererPluginTest extends Unit
     protected $cartChangeQuantityRendererMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig
+     */
+    protected $configMock;
+
+    /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Plugin\Renderer\CartChangeQuantityRendererPlugin
      */
     protected $plugin;

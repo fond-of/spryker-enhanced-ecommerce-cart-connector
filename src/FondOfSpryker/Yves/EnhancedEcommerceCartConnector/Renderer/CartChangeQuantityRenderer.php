@@ -75,7 +75,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @return EnhancedEcommerceTransfer
+     * @return \Generated\Shared\Transfer\EnhancedEcommerceTransfer
      */
     protected function createEnhancedEcommerceAddToCart(): EnhancedEcommerceTransfer
     {
@@ -89,7 +89,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @return EnhancedEcommerceTransfer
+     * @return \Generated\Shared\Transfer\EnhancedEcommerceTransfer
      */
     protected function createEnhancedEcommerceRemoveFromCart(): EnhancedEcommerceTransfer
     {
@@ -194,7 +194,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param ProductViewTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */

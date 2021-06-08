@@ -104,7 +104,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     }
 
     /**
-     * @param array $product
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
      * @return string
      */

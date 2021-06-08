@@ -33,4 +33,15 @@
         <property name="price" type="int"/>
         <property name="attributes" type="array"/>
     </transfer>
+
+    <transfer name="Item">
+        <property name="abstractAttributes" type="array"/>
+        <property name="sku" type="string"/>
+        <property name="quantity" type="int"/>
+        <property name="unitPrice" type="int"/>
+    </transfer>
+
+    <transfer name="Quote">
+        <property name="items" singular="item" type="Item[]"/>
+    </transfer>
 </transfers>
