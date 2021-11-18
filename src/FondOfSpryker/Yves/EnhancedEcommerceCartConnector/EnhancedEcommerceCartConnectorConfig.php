@@ -28,4 +28,12 @@ class EnhancedEcommerceCartConnectorConfig extends AbstractBundleConfig
             'productDetail',
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function getAddToCardFormId(): string
+    {
+        return $this->get(EnhancedEcommerceCartConnectorConstants::ADD_TO_CART_FORM_ID, '');
+    }
 }
