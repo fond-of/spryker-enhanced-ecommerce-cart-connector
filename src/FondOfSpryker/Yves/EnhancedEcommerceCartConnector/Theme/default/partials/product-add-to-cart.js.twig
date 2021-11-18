@@ -1,10 +1,17 @@
+{% if addToCartFormId is not empty %}
 document.addEventListener("DOMContentLoaded", function(event) {
-    document.querySelector("#product_addtocart_form").addEventListener("submit", (event) => {
-        event.preventDefault();
+    var form = document.getElementById('{{ addToCartFormId }}');
 
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({{ data | json_encode() | raw }});
+    if (typeof(form) != 'undefined' && form != null) {
+        document.querySelector("#{{ addToCartFormId }}").addEventListener("submit", (event) => {
+            event.preventDefault();
 
-        document.getElementById("product_addtocart_form").submit();
-    });
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({{ data | json_encode() | raw }});
+
+            document.getElementById("{{ addToCartFormId }}").submit();
+        });
+    }
+
 });
+{% endif %}

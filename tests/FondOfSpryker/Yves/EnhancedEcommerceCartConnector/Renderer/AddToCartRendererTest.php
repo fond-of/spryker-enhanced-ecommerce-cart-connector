@@ -78,6 +78,10 @@ class AddToCartRendererTest extends Unit
             ->method('render')
             ->willReturn('string');
 
+        $this->configMock->expects(static::atLeastOnce())
+            ->method('getAddToCardFormId')
+            ->willReturn('form-id');
+
         $this->renderer->expand($this->twigMock, 'page', $twigVariableBag);
     }
 }

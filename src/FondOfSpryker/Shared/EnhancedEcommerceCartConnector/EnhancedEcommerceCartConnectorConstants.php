@@ -24,4 +24,5 @@ interface EnhancedEcommerceCartConnectorConstants
     public const PARAM_PRODUCT_ATTR_STYLE = 'style';
 
     public const ADD_TO_CART_PLUGIN_VALID_PAGE_TYPES = 'ADD_TO_CART_PLUGIN_VALID_PAGE_TYPES';
+    public const ADD_TO_CART_FORM_ID = 'ADD_TO_CART_FORM_ID';
 }
