@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     if (typeof(form) != 'undefined' && form != null) {
         document.querySelector("#{{ addToCartFormId }}").addEventListener("submit", (event) => {
-            event.preventDefault();s
+            event.preventDefault();
 
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({{ data | json_encode() | raw }});
