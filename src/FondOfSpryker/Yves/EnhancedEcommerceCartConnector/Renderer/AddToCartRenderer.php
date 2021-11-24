@@ -43,7 +43,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
      *
      * @return string
      */
-    public function expand(Environment $twig, string $page, array $twigVariableBag): string
+    public function render(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $twig->render($this->getTemplate(), [
             'addToCartFormId' => $this->config->getAddToCardFormId(),

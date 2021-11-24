@@ -34,6 +34,6 @@ class CartChangeQuantityRendererPlugin extends AbstractPlugin implements Enhance
     {
         return $this->getFactory()
             ->createCartChangeQuantityRenderer()
-            ->expand($twig, $page, $twigVariableBag);
+            ->render($twig, $page, $twigVariableBag);
     }
 }

@@ -37,6 +37,6 @@ class AddToCartRendererPlugin extends AbstractPlugin implements EnhancedEcommerc
     {
         return $this->getFactory()
             ->createAddToCartRenderer()
-            ->expand($twig, $page, $twigVariableBag);
+            ->render($twig, $page, $twigVariableBag);
     }
 }
