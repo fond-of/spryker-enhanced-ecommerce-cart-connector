@@ -6,12 +6,54 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.querySelector("#{{ addToCartFormId }}").addEventListener("submit", (event) => {
             event.preventDefault();
 
+            {# old datalayer #}
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({{ data | json_encode() | raw }});
+            window.dataLayer.push({
+                'event': '{{ data.event }}',
+                'eventCategory': '{{ data.eventCategory }}',
+                'eventAction': '{{ data.eventAction }}',
+                'eventLabel': '{{ data.eventLabel }}',
+                'ecommerce': {
+                    'add': {
+                        'products': [
+                            {% for product in data.products %}
+                            {
+                                'id': '{{ product.id }}',
+                                'name': '{{ product.name }}',
+                                'variant': '{{ product.variant }}',
+                                'brand': '{{ product.brand }}',
+                                'dimension10': '{{ product.dimension10 }}',
+                                'quantity': 1,
+                                'price': '{{ product.price }}'
+                            }{% if loop.last != true %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                }
+            });
+
+            {# GA4 datalayer #}
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: "add_to_cart",
+                ecommerce: {
+                    items: [
+                        {% for product in data.products %}
+                        {
+                            item_name: '{{ product.name }}',
+                            item_id: '{{ product.id }}',
+                            price: '{{ product.price }}',
+                            item_brand: '{{ product.brand }}',
+                            item_variant: '{{ product.variant }}',
+                            quantity: 1
+                        }{% if loop.last != true %},{% endif %}
+                        {% endfor %}
+                    ]
+                }
+            });
 
             document.getElementById("{{ addToCartFormId }}").submit();
         });
     }
-
 });
 {% endif %}
