@@ -5,18 +5,36 @@ window.changeCartQuantity = function (sku, quantity) {
     var product = cartItems[sku];
     var eventLayer;
 
+    var layerGA4 = {
+        event: "add_to_card",
+        ecommerce: {
+            items: []
+        }
+    };
+
     if (quantity > product['quantity']) {
         product.quantity = quantity - product['quantity'];
         addToCartLayer['ecommerce']['add']['products'] = [product];
         eventLayer = addToCartLayer;
+
+        layerGA4.event = 'add_to_card';
+        layerGA4.ecommerce.items.push(product);
     }
 
     if (product['quantity'] > quantity) {
         product.quantity = product['quantity'] - quantity;
         removeFromCartLayer['ecommerce']['remove']['products'] = [product];
         eventLayer = removeFromCartLayer;
+
+        layerGA4.event = 'remove_from_cart';
+        layerGA4.ecommerce.items.push(product);
     }
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(eventLayer);
+
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push(layerGA4);
+
+    return false;
 }
