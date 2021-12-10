@@ -32,9 +32,6 @@ window.changeCartQuantity = function (sku, quantity) {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(eventLayer);
-
-    dataLayer.push({ ecommerce: null });
-    dataLayer.push(layerGA4);
-
-    return false;
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push(layerGA4);
 }

@@ -46,8 +46,10 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     public function render(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $twig->render($this->getTemplate(), [
-            'addToCartFormId' => $this->config->getAddToCardFormId(),
-            'data' => $this->createEnhancedEcommerce($twigVariableBag)->toArray(true, true)
+            'enhancedEcommerce' => array_merge(
+                ['addToCartFormId' => $this->config->getAddToCardFormId()],
+                $this->createEnhancedEcommerce($twigVariableBag)->toArray(true, true)
+            )
         ]);
     }
 
