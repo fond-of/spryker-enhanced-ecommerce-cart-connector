@@ -46,10 +46,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     public function render(Environment $twig, string $page, array $twigVariableBag): string
     {
         return $twig->render($this->getTemplate(), [
-            'enhancedEcommerce' => array_merge(
-                ['addToCartFormId' => $this->config->getAddToCardFormId()],
-                $this->createEnhancedEcommerce($twigVariableBag)->toArray(true, true)
-            )
+            'enhancedEcommerce' => $this->createEnhancedEcommerce($twigVariableBag),
         ]);
     }
 
@@ -70,16 +67,16 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     {
         /** @var \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer */
         $productViewTransfer = $twigVariableBag[ModuleConstants::PARAM_PRODUCT];
+        $enhancedEcommerceProductTransfer = $this->createEnhancedEcommerceProduct($productViewTransfer);
 
         $enhancedEcommerce = (new EnhancedEcommerceTransfer())
             ->setEvent(ModuleConstants::EVENT)
             ->setEventCategory(ModuleConstants::EVENT_CATEGORY)
             ->setEventAction(ModuleConstants::EVENT_ACTION_ADD_TO_CART)
             ->setEventLabel($productViewTransfer->getSku())
+            ->setAddToCartFormId($this->config->getAddToCardFormId())
             ->setEcommerce([
-                'add' => (new EnhancedEcommerceAddEventTransfer())
-                    ->addProduct($this->createEnhancedEcommerceProduct($productViewTransfer))
-                    ->toArray(true, true),
+                'add' => (new EnhancedEcommerceAddEventTransfer())->addProduct($enhancedEcommerceProductTransfer),
             ]);
 
         return $enhancedEcommerce;
@@ -88,11 +85,11 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
     /**
      * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
-     * @return array
+     * @return \Generated\Shared\Transfer\EnhancedEcommerceProductTransfer
      */
     protected function createEnhancedEcommerceProduct(
         ProductViewTransfer $productViewTransfer
-    ): array {
+    ): EnhancedEcommerceProductTransfer {
         return (new EnhancedEcommerceProductTransfer())
             ->setId($productViewTransfer->getSku())
             ->setName($this->getProductName($productViewTransfer))
@@ -100,8 +97,7 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             ->setBrand($this->getProductBrand($productViewTransfer))
             ->setDimension10($this->getProductSize($productViewTransfer))
             ->setQuantity(1)
-            ->setPrice('' . $this->integerToDecimalConverter->convert($productViewTransfer->getPrice()) . '')
-            ->toArray(true, true);
+            ->setPrice('' . $this->integerToDecimalConverter->convert($productViewTransfer->getPrice()) . '');
     }
 
     /**

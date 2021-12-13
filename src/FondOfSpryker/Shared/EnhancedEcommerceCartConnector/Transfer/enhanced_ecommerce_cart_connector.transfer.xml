@@ -8,12 +8,13 @@
         <property name="eventCategory" type="string"/>
         <property name="eventAction" type="string"/>
         <property name="eventLabel" type="string"/>
+        <property name="addToCartFormId" type="string"/>
         <property name="ecommerce" type="array"/>
     </transfer>
 
     <transfer name="EnhancedEcommerceAddEvent">
         <property name="actionField" type="array"/>
-        <property name="products" singular="product" type="array"/>
+        <property name="products" singular="product" type="EnhancedEcommerceProduct[]"/>
     </transfer>
 
     <transfer name="EnhancedEcommerceProduct">
