@@ -76,10 +76,8 @@ class CartChangeQuantityRendererTest extends Unit
     /**
      * @return void
      */
-    public function testExpand(): void
+    public function testRender(): void
     {
-        $twigVariableBag = include codecept_data_dir('twigVariableBag.php');
-
         $this->twigMock->expects($this->atLeastOnce())
             ->method('render')
             ->willReturn('string');
@@ -92,6 +90,6 @@ class CartChangeQuantityRendererTest extends Unit
             ->method('getItems')
             ->willReturn([]);
 
-        $result = $this->renderer->render($this->twigMock, 'page', $twigVariableBag);
+        $result = $this->renderer->render($this->twigMock, 'page', []);
     }
 }

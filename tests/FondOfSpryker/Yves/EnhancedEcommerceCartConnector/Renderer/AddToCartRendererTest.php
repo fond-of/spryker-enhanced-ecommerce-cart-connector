@@ -6,6 +6,8 @@ use Codeception\Test\Unit;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
+use Generated\Shared\Transfer\ProductViewTransfer;
+use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants;
 use Twig\Environment;
 
 class AddToCartRendererTest extends Unit
@@ -36,6 +38,11 @@ class AddToCartRendererTest extends Unit
     protected $productModelMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ProductViewTransfer
+     */
+    protected $productViewTransferMock;
+
+    /**
      * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\AddToCartRenderer
      */
     protected $renderer;
@@ -57,6 +64,10 @@ class AddToCartRendererTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->productViewTransferMock = $this->getMockBuilder(ProductViewTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->enhancedEcommerceTransferMock = $this->getMockBuilder(EnhancedEcommerceTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -70,10 +81,8 @@ class AddToCartRendererTest extends Unit
     /**
      * @return void
      */
-    public function testExpand(): void
+    public function testRender(): void
     {
-        $twigVariableBag = include codecept_data_dir('twigVariableBag.php');
-
         $this->twigMock->expects($this->atLeastOnce())
             ->method('render')
             ->willReturn('string');
@@ -82,6 +91,14 @@ class AddToCartRendererTest extends Unit
             ->method('getAddToCardFormId')
             ->willReturn('form-id');
 
-        $this->renderer->render($this->twigMock, 'page', $twigVariableBag);
+        $this->productViewTransferMock->expects(static::atLeastOnce())
+            ->method('getAttributes')
+            ->willReturn(['some' => 'attributes']);
+
+        $this->productViewTransferMock->expects(static::atLeastOnce())
+            ->method('getName')
+            ->willReturn('product name');
+
+        $this->renderer->render($this->twigMock, 'page', [EnhancedEcommerceCartConnectorConstants::PARAM_PRODUCT => $this->productViewTransferMock]);
     }
 }

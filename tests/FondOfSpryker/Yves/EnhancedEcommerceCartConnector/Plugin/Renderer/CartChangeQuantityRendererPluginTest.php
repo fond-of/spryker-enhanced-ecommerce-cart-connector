@@ -79,7 +79,7 @@ class CartChangeQuantityRendererPluginTest extends Unit
             ->willReturn($this->cartChangeQuantityRendererMock);
 
         $this->cartChangeQuantityRendererMock->expects($this->atLeastOnce())
-            ->method('expand');
+            ->method('render');
 
         $this->plugin->render($this->twigMock, 'page', []);
     }

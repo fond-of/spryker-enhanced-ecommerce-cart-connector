@@ -93,7 +93,7 @@ class AddToCartRendererPluginTest extends Unit
             ->willReturn($this->addToCartRendererMock);
 
         $this->addToCartRendererMock->expects($this->atLeastOnce())
-            ->method('expand');
+            ->method('render');
 
         $this->plugin->render($this->twigMock, 'page', ['product' => $this->productViewTransferMock]);
     }
