@@ -3,11 +3,11 @@
 namespace FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Converter\IntegerToDecimalConverter;
 use FondOfSpryker\Yves\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConfig;
 use Generated\Shared\Transfer\EnhancedEcommerceTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
-use FondOfSpryker\Shared\EnhancedEcommerceCartConnector\EnhancedEcommerceCartConnectorConstants;
 use Twig\Environment;
 
 class AddToCartRendererTest extends Unit
