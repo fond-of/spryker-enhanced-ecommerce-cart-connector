@@ -18,7 +18,7 @@ window.changeCartQuantity = function (sku, quantity) {
         eventLayer = addToCartLayer;
 
         layerGA4.event = 'add_to_card';
-        layerGA4.ecommerce.items.push(product);
+        layerGA4.ecommerce_ga4.items.push(product);
     }
 
     if (product['quantity'] > quantity) {
@@ -27,7 +27,7 @@ window.changeCartQuantity = function (sku, quantity) {
         eventLayer = removeFromCartLayer;
 
         layerGA4.event = 'remove_from_cart';
-        layerGA4.ecommerce.items.push(product);
+        layerGA4.ecommerce_ga4.items.push(product);
     }
 
     window.dataLayer = window.dataLayer || [];
