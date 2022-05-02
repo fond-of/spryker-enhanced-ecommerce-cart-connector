@@ -6,7 +6,7 @@ window.changeCartQuantity = function (sku, quantity) {
     var eventLayer;
 
     var layerGA4 = {
-        event: "add_to_card",
+        event: "add_to_cart",
         ecommerce_ga4: {
             items: []
         }
@@ -17,7 +17,7 @@ window.changeCartQuantity = function (sku, quantity) {
         addToCartLayer['ecommerce']['add']['products'] = [product];
         eventLayer = addToCartLayer;
 
-        layerGA4.event = 'add_to_card';
+        layerGA4.event = 'add_to_cart';
         layerGA4.ecommerce_ga4.items.push(product);
     }
 
