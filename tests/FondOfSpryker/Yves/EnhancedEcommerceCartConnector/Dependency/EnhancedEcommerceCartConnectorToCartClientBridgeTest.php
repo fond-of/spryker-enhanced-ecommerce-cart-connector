@@ -19,7 +19,7 @@ class EnhancedEcommerceCartConnectorToCartClientBridgeTest extends Unit
     protected $quoteTransferMock;
 
     /**
-     * @var EnhancedEcommerceCartConnectorToCartClientBridge
+     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Dependency\EnhancedEcommerceCartConnectorToCartClientBridge
      */
     protected $bridge;
 

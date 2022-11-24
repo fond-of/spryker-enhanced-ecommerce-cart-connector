@@ -38,7 +38,7 @@ class EnhancedEcommerceCartConnectorFactory extends AbstractFactory
         return new CartChangeQuantityRenderer(
             $this->getConfig(),
             $this->getCartClient(),
-            $this->getIntegerToDecimalConverter()
+            $this->getIntegerToDecimalConverter(),
         );
     }
 

@@ -74,7 +74,7 @@ class AddToCartRendererTest extends Unit
 
         $this->renderer = new AddToCartRenderer(
             $this->integerToDecimalConverterMock,
-            $this->configMock
+            $this->configMock,
         );
     }
 

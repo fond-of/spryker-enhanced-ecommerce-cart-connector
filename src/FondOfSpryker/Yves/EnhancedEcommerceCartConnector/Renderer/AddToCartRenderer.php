@@ -113,11 +113,17 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             return $productViewTransfer->getName();
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED];
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_MODEL];
         }
 
@@ -137,11 +143,17 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             return '';
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE_UNTRANSLATED])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE_UNTRANSLATED]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE_UNTRANSLATED])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE_UNTRANSLATED];
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_STYLE];
         }
 
@@ -161,7 +173,10 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             return '';
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_BRAND])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_BRAND]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_BRAND])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_BRAND];
         }
 
@@ -181,11 +196,17 @@ class AddToCartRenderer implements EnhancedEcommerceRendererInterface
             return '';
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE_UNTRANSLATED])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE_UNTRANSLATED]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE_UNTRANSLATED])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE_UNTRANSLATED];
         }
 
-        if (isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE])) {
+        if (
+            isset($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE]) &&
+            !empty($productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE])
+        ) {
             return $productAttributes[ModuleConstants::PARAM_PRODUCT_ATTR_SIZE];
         }
 

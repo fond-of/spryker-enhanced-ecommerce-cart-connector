@@ -15,9 +15,19 @@ use Twig\Environment;
 
 class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
 {
+    /**
+     * @var string
+     */
     public const UNTRANSLATED_KEY = '_';
 
+    /**
+     * @var string
+     */
     public const EVENT_ADD = 'add';
+
+    /**
+     * @var string
+     */
     public const EVENT_REMOVE = 'remove';
 
     /**
@@ -111,7 +121,7 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
 
         foreach ($this->cartClient->getQuote()->getItems() as $itemTransfer) {
             $cartItems[$itemTransfer->getSku()] = $this->removeEmptyArrayIndex(
-                $this->createEnhancedEcommerceProductTransfer($itemTransfer)->toArray(true, true)
+                $this->createEnhancedEcommerceProductTransfer($itemTransfer)->toArray(true, true),
             );
         }
 

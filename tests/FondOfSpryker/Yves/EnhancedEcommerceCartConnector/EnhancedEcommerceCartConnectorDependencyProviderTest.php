@@ -37,8 +37,8 @@ class EnhancedEcommerceCartConnectorDependencyProviderTest extends Unit
         $this->assertInstanceOf(
             Container::class,
             $this->dependencyProvider->provideDependencies(
-                $this->containerMock
-            )
+                $this->containerMock,
+            ),
         );
     }
 }

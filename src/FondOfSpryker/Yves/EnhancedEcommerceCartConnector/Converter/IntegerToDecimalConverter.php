@@ -6,6 +6,9 @@ use Spryker\Shared\Money\Exception\InvalidConverterArgumentException;
 
 class IntegerToDecimalConverter implements IntegerToDecimalConverterInterface
 {
+    /**
+     * @var int
+     */
     public const PRICE_PRECISION = 100;
 
     /**
@@ -20,7 +23,7 @@ class IntegerToDecimalConverter implements IntegerToDecimalConverterInterface
         if (!is_int($value)) {
             throw new InvalidConverterArgumentException(sprintf(
                 'Only integer values allowed for conversion to float. Current type is "%s"',
-                gettype($value)
+                gettype($value),
             ));
         }
 

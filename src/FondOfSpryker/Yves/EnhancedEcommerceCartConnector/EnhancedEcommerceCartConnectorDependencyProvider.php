@@ -10,7 +10,14 @@ use Spryker\Yves\Kernel\Container;
 
 class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const CART_CLIENT = 'CART_CLIENT';
+
+    /**
+     * @var string
+     */
     public const CONVERTER_INTERGER_TO_DECIMAL = 'CONVERTER_INTERGER_TO_DECIMAL';
 
     /**
@@ -35,7 +42,7 @@ class EnhancedEcommerceCartConnectorDependencyProvider extends AbstractBundleDep
     {
         $container->set(static::CART_CLIENT, static function (Container $container) {
             return new EnhancedEcommerceCartConnectorToCartClientBridge(
-                $container->getLocator()->cart()->client()
+                $container->getLocator()->cart()->client(),
             );
         });
 

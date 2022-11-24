@@ -27,7 +27,7 @@ class CartChangeQuantityRendererTest extends Unit
     protected $cartClientMock;
 
     /**
-     * @var CartChangeQuantityRenderer
+     * @var \FondOfSpryker\Yves\EnhancedEcommerceCartConnector\Renderer\CartChangeQuantityRenderer
      */
     protected $renderer;
 
@@ -69,7 +69,7 @@ class CartChangeQuantityRendererTest extends Unit
         $this->renderer = new CartChangeQuantityRenderer(
             $this->configMock,
             $this->cartClientMock,
-            $this->integerToDecimalConverterMock
+            $this->integerToDecimalConverterMock,
         );
     }
 
