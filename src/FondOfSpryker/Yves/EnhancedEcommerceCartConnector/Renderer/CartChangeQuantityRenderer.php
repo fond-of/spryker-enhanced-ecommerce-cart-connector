@@ -156,8 +156,8 @@ class CartChangeQuantityRenderer implements EnhancedEcommerceRendererInterface
     {
         $productAttributes = $itemTransfer->getAbstractAttributes();
 
-        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_NAME_UNTRANSLATED])) {
-            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_NAME_UNTRANSLATED];
+        if (isset($productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED])) {
+            return $productAttributes[static::UNTRANSLATED_KEY][ModuleConstants::PARAM_PRODUCT_ATTR_MODEL_UNTRANSLATED];
         }
 
         return $itemTransfer->getName();
